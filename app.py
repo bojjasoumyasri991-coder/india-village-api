@@ -8,6 +8,14 @@ app = Flask(__name__)
 
 # Load dataset
 df = pd.read_csv("india_villages.csv")
+@app.route('/health')
+def health_check():
+
+    return jsonify({
+        "status": "API running",
+        "service": "India Village API",
+        "version": "1.0"
+    })
 
 # ------------------ STATES API ------------------
 
