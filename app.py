@@ -118,24 +118,14 @@ def api_docs():
 
     docs = {
         "API Documentation": {
-
-            "1. Get States":
-            "/states",
-
-            "2. Get Districts":
-            "/districts?state=HIMACHAL%20PRADESH",
-
-            "3. Get Subdistricts":
-            "/subdistricts?district=Kangra",
-
-            "4. Get Villages":
-            "/villages?subdistrict=Pangi",
-
-            "5. Get Villages with Limit":
-            "/villages?subdistrict=Pangi&limit=10",
-
-            "6. Search Village":
-            "/search?village=pan"
+            
+            "1. Get States": "/states",
+            "2. Get Districts": "/districts?state=HIMACHAL%20PRADESH",
+            "3. Get Subdistricts": "/subdistricts?district=Kangra",
+            "4. Get Villages": "/villages?subdistrict=Pangi",
+            "5. Get Villages with Limit": "/villages?subdistrict=Pangi&limit=10",
+            "6. Search Village": "/search?village=pan",
+            "7. Health Check": "/health"
         }
     }
 
