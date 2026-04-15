@@ -1,19 +1,32 @@
 from flask import Flask, jsonify, request, render_template
 import pandas as pd
+from functools import lru_cache
+import re
 
 app = Flask(__name__)
 
-# Load dataset safely
-df = pd.read_csv(
-    "india_villages.csv",
-    low_memory=False,
-    on_bad_lines="skip"
-)
 
+# ✅ Load only required columns + cache (VERY IMPORTANT)
+@lru_cache(maxsize=1)
+def load_data():
+    return pd.read_csv(
+        "india_villages.csv",
+        usecols=["STATE NAME", "DISTRICT NAME", "SUB-DISTRICT NAME", "Area Name"],
+        dtype=str,
+        low_memory=True
+    )
+
+
+df = load_data()
+
+
+# -------------------- ROUTES --------------------
 
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
 @app.route("/app")
 def app_page():
     return render_template("index.html")
@@ -21,8 +34,7 @@ def app_page():
 
 @app.route("/states")
 def get_states():
-
-    states = df["STATE NAME"].dropna().unique().tolist()
+    states = sorted(df["STATE NAME"].dropna().unique().tolist())
 
     return jsonify({
         "success": True,
@@ -33,42 +45,48 @@ def get_states():
 
 @app.route("/districts")
 def get_districts():
-
     state = request.args.get("state")
 
     if not state:
         return jsonify({"error": "state parameter required"}), 400
 
-    districts = df[df["STATE NAME"] == state]["DISTRICT NAME"].dropna().unique().tolist()
+    districts = (
+        df[df["STATE NAME"] == state]["DISTRICT NAME"]
+        .dropna()
+        .unique()
+        .tolist()
+    )
 
     return jsonify({
         "success": True,
         "count": len(districts),
-        "data": districts
+        "data": sorted(districts)
     })
 
 
 @app.route("/subdistricts")
 def get_subdistricts():
-
     district = request.args.get("district")
 
     if not district:
         return jsonify({"error": "district parameter required"}), 400
 
-    subdistricts = df[df["DISTRICT NAME"] == district]["SUB-DISTRICT NAME"].dropna().unique().tolist()
+    subdistricts = (
+        df[df["DISTRICT NAME"] == district]["SUB-DISTRICT NAME"]
+        .dropna()
+        .unique()
+        .tolist()
+    )
 
     return jsonify({
         "success": True,
         "count": len(subdistricts),
-        "data": subdistricts
+        "data": sorted(subdistricts)
     })
 
 
 @app.route("/villages")
 def get_villages():
-    import re
-
     subdistrict = request.args.get("subdistrict")
 
     if not subdistrict:
@@ -76,14 +94,12 @@ def get_villages():
 
     limit = int(request.args.get("limit", 20))
 
-    # Filter data
-    villages_series = df[df["SUB-DISTRICT NAME"] == subdistrict]["Area Name"].dropna()
+    villages = df[df["SUB-DISTRICT NAME"] == subdistrict]["Area Name"].dropna()
 
-    # Clean villages in one step (optimized)
-    cleaned_villages = (
-        villages_series
-        .astype(str)
-        .apply(lambda x: re.sub(r"\(.*?\)", "", x))  # remove (numbers)
+    # ✅ Clean data
+    cleaned = (
+        villages.astype(str)
+        .apply(lambda x: re.sub(r"\(.*?\)", "", x))
         .str.replace("R.F.", "", regex=False)
         .str.replace("D.P.F.", "", regex=False)
         .str.strip()
@@ -95,21 +111,19 @@ def get_villages():
 
     return jsonify({
         "success": True,
-        "count": len(cleaned_villages),
-        "data": cleaned_villages
+        "count": len(cleaned),
+        "data": cleaned
     })
+
 
 @app.route("/search")
 def search_village():
-
     village = request.args.get("village")
 
     if not village:
         return jsonify({"error": "village parameter required"}), 400
 
-    result = df[df["Area Name"].str.contains(village, case=False, na=False)]
-
-    result = result.head(20)
+    result = df[df["Area Name"].str.contains(village, case=False, na=False)].head(20)
 
     data = []
 
@@ -130,17 +144,18 @@ def search_village():
 
 @app.route("/docs")
 def docs():
-
     return jsonify({
         "API Endpoints": {
             "States": "/states",
             "Districts": "/districts?state=HIMACHAL%20PRADESH",
-            "Subdistricts": "/subdistricts?district=Kangra",
+            "Subdistricts": "/subdistricts?district=Chamba",
             "Villages": "/villages?subdistrict=Pangi",
             "Search": "/search?village=ram"
         }
     })
 
+
+# -------------------- RUN --------------------
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
