@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+flask
+mysql-connector-python
+gunicorn
+=======
+flask
+pandas
+gunicorn
+flasgger
+>>>>>>> 37ffe8ac8d27e1db2f82f52f79dc3e43d784c0ff

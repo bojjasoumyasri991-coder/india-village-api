@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Village Address System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 600px;
+            padding: 30px;
+
+            background: white;
+            border-radius: 15px;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 5px;
+            color: #111827;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 10px;
+            display: block;
+            color: #374151;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 12px;
+
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+
+            background: #f9fafb;
+
+            transition: 0.2s;
+        }
+
+        select:hover {
+            border-color: #6366f1;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 5px rgba(99,102,241,0.4);
+        }
+
+        h3 {
+            margin-top: 15px;
+            color: #111827;
+        }
+
+        ul {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-left: 20px;
+        }
+
+        li {
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+            transition: 0.2s;
+        }
+
+        li:hover {
+            background: #eef2ff;
+            transform: translateX(5px);
+        }
+
+        .count {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .back-btn:hover {
+            color: #111827;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/" class="back-btn">← Back</a>
+
+    <h2>Village Address System</h2>
+    <p class="subtitle">Select location to explore villages</p>
+
+    <label>State</label>
+    <select id="state"></select>
+
+    <label>District</label>
+    <select id="district"></select>
+
+    <label>Subdistrict</label>
+    <select id="subdistrict"></select>
+
+    <h3>Villages</h3>
+    <ul id="villages"></ul>
+
+    <div class="count" id="count"></div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

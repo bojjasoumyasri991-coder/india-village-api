@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Village Address System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+
+            background: linear-gradient(135deg, #111827, #1f2937);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Card container */
+        .card {
+            text-align: center;
+            padding: 50px;
+            width: 600px;
+
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+
+            border-radius: 20px;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+            color: white;
+
+            animation: fadeIn 1s ease;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #9ca3af;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Button */
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+
+            background: linear-gradient(45deg, #6366f1, #4f46e5);
+            color: white;
+            text-decoration: none;
+
+            font-size: 16px;
+            transition: 0.3s;
+
+            animation: glow 2s infinite;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(99,102,241,0.7);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #6366f1; }
+            50% { box-shadow: 0 0 20px #6366f1; }
+            100% { box-shadow: 0 0 5px #6366f1; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>India Village Address System</h1>
+
+    <p>
+        Explore villages using hierarchical filtering<br>
+        (State → District → Subdistrict)
+    </p>
+
+    <a href="/app" class="btn">🚀 Open Application</a>
+
+    <div class="footer">
+        Built using Flask + REST APIs
+    </div>
+
+</div>
+
+</body>
+</html>
